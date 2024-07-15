@@ -1,0 +1,40 @@
+[gd_scene load_steps=7 format=3 uid="uid://dd8mj7m8drono"]
+
+[ext_resource type="PackedScene" uid="uid://ct27xifqau7gq" path="res://jugador.tscn" id="1_oi213"]
+[ext_resource type="Script" path="res://scripts/jugador.gd" id="2_a7cto"]
+[ext_resource type="PackedScene" uid="uid://c2ldrqkkjmurk" path="res://enemy.tscn" id="3_3sync"]
+[ext_resource type="Script" path="res://enemy.gd" id="4_srrdw"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_vvrh5"]
+size = Vector3(50, 1, 50)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ehuvo"]
+size = Vector3(50, 1, 50)
+
+[node name="Node3D" type="Node3D"]
+
+[node name="floor" type="StaticBody3D" parent="."]
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="floor"]
+mesh = SubResource("BoxMesh_vvrh5")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="floor"]
+shape = SubResource("BoxShape3D_ehuvo")
+
+[node name="jugador" parent="." instance=ExtResource("1_oi213")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.40234, 0)
+script = ExtResource("2_a7cto")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.28076, 8.18789)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.0614318, 0.998111, 0, -0.998111, 0.0614318, 0, 10.5755, 1.66078)
+
+[node name="enemy" parent="." instance=ExtResource("3_3sync")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.987, 1, 0)
+disable_mode = 2
+script = ExtResource("4_srrdw")
+
+[connection signal="body_entered" from="enemy" to="jugador" method="_on_enemy_body_entered"]
